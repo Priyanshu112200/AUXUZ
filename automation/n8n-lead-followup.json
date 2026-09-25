@@ -1,0 +1,12 @@
+{
+  "name": "AUXUZ — New Lead Follow-up (Template)",
+  "nodes": [
+    {"parameters": {"httpMethod": "POST", "path": "auxuz/new-lead", "responseMode": "onReceived"}, "id": "webhook", "name": "Lead Webhook", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [260,300]},
+    {"parameters": {"conditions": {"string": [{"value1": "={{$json.contact}}", "operation": "contains", "value2": "@"}]}}, "id": "has-email", "name": "Has Email", "type": "n8n-nodes-base.if", "typeVersion": 2, "position": [500,300]},
+    {"parameters": {"fromEmail": "contact.auxuz@gmail.com", "toEmail": "={{$json.contact}}", "subject": "We received your AUXUZ enquiry", "text": "Hi {{$json.name}},\n\nThanks for reaching out to AUXUZ. We received your enquiry for {{$json.business}} and will review it shortly.\n\n— AUXUZ"}, "id": "email", "name": "Acknowledgement Email", "type": "n8n-nodes-base.emailSend", "typeVersion": 2, "position": [760,220]},
+    {"parameters": {"method": "POST", "url": "https://YOUR_SUPABASE_PROJECT.supabase.co/rest/v1/lead_events", "sendHeaders": true, "headerParametersUi": {"parameter": [{"name": "apikey", "value": "YOUR_SUPABASE_ANON_KEY"}, {"name": "Authorization", "value": "Bearer YOUR_SUPABASE_ANON_KEY"}, {"name": "Content-Type", "value": "application/json"}]}, "sendBody": true, "jsonParameters": true, "bodyParametersJson": "={\"lead_id\": $json.id, \"event_type\": \"ACKNOWLEDGEMENT_SENT\"}"}, "id": "event", "name": "Record Event", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4, "position": [1020,220]}
+  ],
+  "connections": {"Lead Webhook": {"main": [[{"node": "Has Email", "type": "main", "index": 0}]]}, "Has Email": {"main": [[{"node": "Acknowledgement Email", "type": "main", "index": 0}], []]}, "Acknowledgement Email": {"main": [[{"node": "Record Event", "type": "main", "index": 0}]]}},
+  "active": false,
+  "settings": {"executionOrder": "v1"}
+}

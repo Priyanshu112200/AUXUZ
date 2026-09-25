@@ -1,0 +1,2 @@
+import Link from 'next/link'
+export default function Thanks(){return <main className="thanks"><img src="/auxuz-logo.png" alt="AUXUZ"/><div className="eyebrow">MESSAGE RECEIVED</div><h1>We have it.<br /><em>Talk soon.</em></h1><p>Your enquiry has been submitted. If the request is urgent, email contact.auxuz@gmail.com.</p><Link className="button dark" href="/">Back to AUXUZ <span>↗</span></Link></main>}
